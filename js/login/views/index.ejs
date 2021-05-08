@@ -1,0 +1,11 @@
+<% if (messages.error) { %>
+<div class="error">
+    <%= messages.error %>
+</div>
+<% } %>
+
+<h1>Hi <%= name %>!</h1>
+
+<form action="/logout" method="post">
+    <button type="submit">Log Out</button>
+</form>

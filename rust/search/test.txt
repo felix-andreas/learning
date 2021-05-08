@@ -1,0 +1,10 @@
+We expect our program to look at test.txt and print out the lines that contain foobar. 
+But how do we get these two values?
+The text after the name of the program is often called the “command line arguments”,
+or “command line flags” (especially when they look like --this). Internally,
+the operating system usually represents them as a list of strings – roughly spaking, 
+they get separated by spaces.text are many ways to think about these arguments, and how
+ to parse them into something more easy to work with. You will also need to tell the test 
+ users of your program which arguments they need to give and in which format they are 
+ expected.
+

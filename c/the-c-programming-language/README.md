@@ -1,0 +1,1 @@
+do the exercises of book "the c programming language"

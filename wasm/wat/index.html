@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer>
+        const memory = new WebAssembly.Memory({ initial: 1 });
+        WebAssembly.instantiateStreaming(
+            fetch("more-advanced.wasm"),
+            {
+                js: { memory },
+                console: {
+                    log(offset, length) {
+                        var bytes = new Uint8Array(memory.buffer, offset, length);
+                        var string = new TextDecoder('utf8').decode(bytes);
+                        console.log(string);
+                    }
+                }
+            }
+        ).then(module => {
+            const exports = module.instance.exports;
+            const num1 = 21;
+            const num2 = 21;
+
+            let div = document.createElement('div')
+            div.innerHTML =
+                `adding ${num1} and ${num2} using WebAssembly: ${exports.add(num1, num2)}\n`
+            document.body.appendChild(div)
+
+            div = document.createElement('div')
+            div.innerHTML = `getAnswer using WebAssembly: ${exports.getAnswer()}`
+            document.body.appendChild(div)
+
+            exports.hello()
+        })
+    </script>
+</head>
+
+<body>
+    <div></div>
+</body>
+
+</html>

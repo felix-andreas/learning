@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+
+<form action="/register" method="POST">
+  <input type="text" autofocus name="name" placeholder="Enter your Name here!">
+  <select name="dorm">
+    <option value="" selected disabled>Dorm</option>
+    <option value="Dorm">Dorm</option>
+    <option value="Apley Court">Apley Court</option>
+    <option value="Grays">Grays</option>
+    <option value="Greennough">Greennough</option>
+    <option value="Hollis">Hollis</option>
+  </select>
+  <input type="Submit">
+</form>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<%- include("partials/header.ejs") %>
+<div class="container m-auto border-2 rounded border-gray-300 p-4 max-w-screen-sm ">
+    <h1 class="text-xl font-semibold">Login</h1>
+    <form action="/login" method="post">
+        <div>
+            <label for="name">Email</label>
+            <input class="border-gray-400 focus:border-blue-500" type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="name">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button class="border-blue-500" type="submit">Login</button>
+    </form>
+</div>
+<div class="flex justify-center">
+    Don’t have an account? <a href="/signup" class="px-1 text-blue-600 visited:text-purple-600"> Sign Up</a>
+</div>

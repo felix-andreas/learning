@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css?family=Asap:400,500,700');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+html * {
+  font-family: Asap, sans-serif;
+  color: #24272E;
+  overflow: hidden;
+}
+
+body {
+  background-color: white;
+}
+
+header {
+  text-align: center;
+  background: #1aff8c;
+  width: 100%;
+  padding: 20px;
+}
+
+header > h1 {
+  color: white;
+}
+
+#messages {
+  height: 500px;
+  overflow-y: scroll, hidden;
+}
+
+.message {
+  color: #262626;
+  border: 1.5px solid #dedede;
+  border-radius: 10px;
+  float: left;
+  text-align: left;
+  background: #f1f1f1;
+  padding: 10px;
+  margin: 10px 14px;
+  display: table;
+  clear: both;
+}
+
+.reply {
+  float: right;
+  border-color: #ccc;
+  background: #ddd;
+}
+
+
+.sendContainer {
+  position: fixed;
+  bottom: 0;
+  margin: auto auto;
+  display: table;
+}
+
+#textbox {
+  float: left;
+  width: 500px;
+  margin: 10px;
+  padding: 10px;
+}
+
+
+#button {
+  padding: 15px;
+  margin: 10px;
+  color: white;
+  background: #1aff8c;
+  border-radius: 5px;
+  border: 0px;
+  font-size: 20px;
+}

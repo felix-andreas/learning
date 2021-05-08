@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<input type="text" autofocus autocomplete="off" placeholder="Query">
+
+<ul></ul>
+
+<!--jQuery-->
+<!--<script>-->
+  <!--let input = document.querySelector('input');-->
+  <!--input.onkeyup = function() {-->
+    <!--$.get('/search?q=' + input.value, function(data) {-->
+      <!--let html = '';-->
+      <!--for (word of data) {-->
+        <!--html += `<li>${word}</li>`-->
+      <!--}-->
+      <!--document.querySelector('ul').innerHTML = html;-->
+    <!--});-->
+  <!--}-->
+<!--</script>-->
+
+<!--Vanilla JavaScript-->
+<script>
+let input = document.querySelector('input');
+let aj = new XMLHttpRequest();
+input.onkeyup = function() {
+  aj.onreadystatechange = function () {
+    if (aj.readyState == 4 && aj.status == 200) {
+      let html = "";
+      for (word of JSON.parse(aj.response)) {
+        html += `<li>${word}</li>`;
+      }
+      document.querySelector('ul').innerHTML = html;
+    }
+  };
+  aj.open("GET", '/search?q=' + input.value, true);
+  aj.send();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js" type="text/javascript"></script>
+    <script src="Card.js"></script>
+    <style></style>
+</head>
+
+<body>
+    <div id="card-list">
+    </div>
+    <script>
+        const cardList = document.querySelector("#card-list")
+        for (let i = 0; i < 10; i++) {
+            const card = document.createElement("my-card")
+            card.setAttribute("date", faker.date.past())
+            card.setAttribute("name", faker.name.findName())
+            card.setAttribute("jobTitle", faker.name.jobTitle())
+            card.setAttribute("title", faker.commerce.productName())
+            cardList.appendChild(card)
+        }
+    </script>
+</body>
+
+</html>
