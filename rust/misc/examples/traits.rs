@@ -14,10 +14,7 @@ trait Animal {
 
 impl Animal for Sheep {
     fn new(name: &'static str) -> Sheep {
-        Sheep {
-            name: name,
-            naked: false,
-        }
+        Sheep { name, naked: false }
     }
     fn name(&self) -> &'static str {
         self.name
