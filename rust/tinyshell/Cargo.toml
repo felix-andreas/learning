@@ -1,10 +1,10 @@
 [package]
-name = "myshell"
+name = "tinyshell"
 version = "0.1.0"
 edition = "2018"
 
 [[bin]]
-name = "myshell"
+name = "tinyshell"
 path = "main.rs"
 
 [dependencies]

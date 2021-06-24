@@ -7,7 +7,10 @@ use std::{
 fn main() {
     loop {
         let current_dir = env::current_dir().unwrap();
-        print!("myshell in {}\n$ ", current_dir.display());
+        print!(
+            "\x1b[1;31mtinyshell\x1b[0m 🤏 in \x1b[1;34m{}\x1b[0m\n$ ",
+            current_dir.display()
+        );
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
@@ -31,6 +34,7 @@ fn main() {
                     eprintln!("{}", error);
                 }
             }
+            "c" => print!("\x1b[2J\x1b[1;1H"),
             "exit" => return,
             command => {
                 match std::process::Command::new(command).args(args).spawn() {
