@@ -2,7 +2,7 @@
 name = "pytorch-playground"
 version = "0.1.0"
 description = ""
-authors = ["Felix Andreas <felix.andreas95@googlemail.com>"]
+authors = ["Felix Andreas"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

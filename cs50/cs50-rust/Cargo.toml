@@ -1,7 +1,7 @@
 [package]
 name = "cs50-rust"
 version = "0.1.0"
-authors = ["Felix Andreas <felix.andreas95@googlemail.com>"]
+authors = ["Felix Andreas"]
 edition = "2018"
 
 [[bin]]
