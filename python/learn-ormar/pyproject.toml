@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "learn-ormar"
+version = "0.1.0"
+description = ""
+authors = ["Felix Andreas <felix.andreas95@googlemail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+ormar = "^0.10.23"
+omar = { extras = ["sqlite", "orjson"], version = "^0.0.1" }
+fastapi = "^0.70.1"
+uvicorn = {extras = ["standard"], version = "^0.16.0"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = {version = "^21.12b0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

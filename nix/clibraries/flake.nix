@@ -1,21 +1,19 @@
 {
   inputs = {
-    nixpkgs.url = "n";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-          {
-            devShell = pkgs.mkShell {
-              buildInputs = with pkgs; [
-                cowsay
-              ];
-            };
-          }
+    flake-utils.lib.eachDefaultSystem (system:
+      with nixpkgs.legacyPackages.${system};
+      {
+        devShell = pkgs.mkShell {
+          buildInputs = [
+            gtk4
+            pkg-config
+          ];
+        };
+      }
     );
 }
