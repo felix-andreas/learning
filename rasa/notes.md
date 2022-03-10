@@ -6,10 +6,24 @@
 * 5.1 Can a single word in a sentence be part of two entities?
 * what is `UnexpecTEDIntentPolicy2`?
 * look at contents of model.tar.gz
+* what is featurization, is this the encoder part of the transformers model?? (lesson 8)
+* what are classifiers. are they built on top of the transfomers model? (model heads?) (lesson 8)
+* why is our pipeline emtpy? what is the default? (lesson 8)
+* why can nlu pipeline only be trained and used sequentially but dialog policy pipeline can be trained and used in parallel (lesson 8)
+* difference between sparse vs dense features (lesson 8)
+* always `return []` after `dispatcher.utter_message(...)`
+
 
 ## ideas
 
 * refactor `rock_paper_scissor_play` -> `play_game` + `entity`
+* use `tracker.get_latest_entity_value` instead of `get_slot`
+* lesson 9: he added a `RegexEntityExtractor` to the pipeline to detect the `place` entity. maybe this is the reason our tests fail
+* implement `utter_info` - display info of what emilio is able to do
+    * tell time
+    * play 2 games: schere stein papier, guess number
+    * use some API: e.g. geographic - tell distance between two different location
+    * action which sets slot using `SlotSet`
 
 ## lesson 1: introduction to rasa
 
@@ -192,5 +206,87 @@
 
 * text, button, images, etc. depends on channel
 * use `channel` field to define channel-specific respones
+
+## lesson 8: pipeline and policy configuration
+
+* training pipelines and dialoage policy are the core of the assistant
+    * defines how the assistant understands user input  
+    * defines how to respond back to the user
+* `config.yml`
+    * `pipeline`
+        * defines the NLU training pipeline, which defines the steps that will be used to extract intents and entities
+        * from raw message tokenization to which classifier will be used 
+            * tokenization
+            * featurization
+            * intent classification & entity extraction
+        * order of components matters
+    * `policies`
+        * defines dialog policies and models
+* overview of components
+    * **tokenizer** - parse user input into tokens
+    * **featurizer** - extract features from tokens
+    * **classifiers** - use features to put labels on user's input (DIET - Dual Intent and Entity Transformer)
+    * **entity extractors** - you can multiple entity extractors (DIET, Regex, and Duckling)
+* dialog policies
+    * what is the best next action?
+    * either rule-based (`rules.yml`) or ml-based (`stories.yml`)
+    * in contrast to nlu pipeline (trained and used sequentielly), dialog policies can be trained and used in parallel
+    * priorities can be used to define the precedence between different policies
+    * default policy priority in rasa
+        * 6 - `RulePolicy
+        * 3 - `MemoizationPolicy`
+        * 1 - `TEDPolicy`
+    * `RulePolicy` - main very strict rule-based policy in rasa
+    * `MemoizationPolicy` - remembers stories from `stories.yml` and matches it with current conversation. has confidence of 1
+    * `TEDPolicy` - Transformer Embedding Dialoge Policy
+        * `max_history` - defines how many steps of the conversation the assistant keeps in memory for making the prediction
+    * custom components can also be build in python
+
+### questions
+
+* tokenizer, featurizer, classifier (entity or intent extraction)
+* because policies might have the same confidence
+
+## lesson 9: custom actions
+
+* allows to write custom code in python which can run of the behave of the users
+    * do a computation
+    * fetch data from database
+    * communicate with an API (send email, create calendar entry)
+* separation of concerns
+    * rasa core - infers what a user wants and what action to take next
+    * custom actions - implement custom domain-specific actions
+        * implemented in python + rasa SDK (or any other backend but requires custom code)
+* rasa sdk
+        * `Action` - base class to define actions
+            * `name` - method which returns name we refer to in `domain.yml`
+            * `run` - method which runs if the action is triggered
+                * `dispatcher` - allows to send message back to user
+                * `tracker` - parameter which gives access to intents, entities, and slots
+                * `domain` - data defined in `domain.yml`
+                * `return` is used to set events (e.g. `SlotSet`)
+* build custom action
+    * define intent in `nlu.yml`
+    * assosciate action with intent in `rules.yml` or `stories.yml`
+    * register action and intent in `domain.yml`
+    * write code for custom action
+* `endpoints.yml` define endpoint of actions server
+* `rasa interactive` gives view into which slots are being set
+
+### questions
+
+* the `tracker` contains information such as `intent`, `entites`, and `slots`
+* the `dispatcher` can be used to issue reponses to the user
+* slots can be set by returning a `SlotSet("slot_name", value)` event
+
+## lesson 10: basic forms
+
+* forms can be used to collect information from a user (slot filling)
+* useful if user has to give multiple pieces of information and needs to be flexible in how the user might say them
+* active form can be thought of a loop, which keeps asking for information until all the slots are filled in -> then form becomes inactive -> dialog manager predicts next action
+* custom actions can be used to validate form inputs
+* create rule to activate form 
+    * e.g. `action: simple_pizza_form` & `active_loop: simple_pizza_form`
+    * 
 
 
