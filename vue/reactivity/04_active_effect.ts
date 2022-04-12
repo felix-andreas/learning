@@ -14,8 +14,7 @@
         activeEffect = null
     }
 
-
-    function track(target: any, key: string) {
+    function track(target: object, key: string) {
         if (activeEffect) {
             let depsMap = targetMap.get(target)
             if (!depsMap) {
@@ -31,7 +30,7 @@
         }
     }
 
-    function trigger(target: any, key: string) {
+    function trigger(target: object, key: string) {
         const depsMap = targetMap.get(target)
         if (!depsMap) {
             return
@@ -42,26 +41,27 @@
         }
     }
 
-
-    function reactive(target: any) {
-        const handler: ProxyHandler<any> = {
-            get(target: any, key: string, receiver) {
-                console.log("Get was called", key)
-                const result = Reflect.get(target, key, receiver)
-                track(target, key)
-                return result
-            },
-            set(target: any, key: string, value: any, receiver) {
-                console.log("Set was called", key, value)
-                const oldValue = target[key]
-                const result = Reflect.set(target, key, value, receiver)
-                if (result && oldValue != value) {
-                    trigger(target, key)
+    function reactive<T extends object>(target: T) {
+        return new Proxy(
+            target,
+            {
+                get(target: T, key: string, receiver) {
+                    console.log("Get was called", key)
+                    const result = Reflect.get(target, key, receiver)
+                    track(target, key)
+                    return result
+                },
+                set(target: T, key: string, value: any, receiver) {
+                    console.log("Set was called", key, value)
+                    const oldValue = target[key]
+                    const result = Reflect.set(target, key, value, receiver)
+                    if (result && oldValue != value) {
+                        trigger(target, key)
+                    }
+                    return result
                 }
-                return result
             }
-        }
-        return new Proxy(target, handler)
+        )
     }
 
     function ref(raw: any) {
@@ -82,13 +82,8 @@
     const salePrice = ref(0)
     let total = 0
 
-    effect(() => {
-        salePrice.value = 0.9 * product.price
-    })
-    effect(() => {
-        total = salePrice.value * product.quantity
-    })
-
+    effect(() => { salePrice.value = 0.9 * product.price })
+    effect(() => { total = salePrice.value * product.quantity })
 
     console.log({ total, salePrice })
 

@@ -18,9 +18,7 @@
         if (dep === undefined) {
             return
         }
-        dep.forEach(effect => {
-            effect()
-        })
+        dep.forEach(effect)
     }
 
 
@@ -29,9 +27,7 @@
 
     let total = 0
 
-    let effect = () => {
-        total = product.price * product.quantity
-    }
+    let effect = () => { total = product.price * product.quantity }
 
     track('quantity')
     effect()

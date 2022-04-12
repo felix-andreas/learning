@@ -6,7 +6,7 @@
     const dep = new Set<() => void>()
     const effect = () => { total = price * quantity }
     const track = () => { dep.add(effect) }
-    const trigger = () => { dep.forEach((effect: () => void) => effect()) }
+    const trigger = () => { dep.forEach(effect) }
 
     track()
     trigger()
