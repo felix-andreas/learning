@@ -1,7 +1,5 @@
-
 (() => {
     type Effect = () => void
-    type Getter = () => any
     type Dep = Set<Effect>
     type DepsMap = Map<string, Dep>
     type TargetMap = WeakMap<any, DepsMap>
@@ -15,8 +13,8 @@
         activeEffect = null
     }
 
-
-    function track(target: any, key: string) {
+    function track(target: object, key: string) {
+        console.log("Track", key)
         if (activeEffect) {
             let depsMap = targetMap.get(target)
             if (!depsMap) {
@@ -32,7 +30,8 @@
         }
     }
 
-    function trigger(target: any, key: string) {
+    function trigger(target: object, key: string) {
+        console.log("Trigger", key)
         const depsMap = targetMap.get(target)
         if (!depsMap) {
             return
@@ -43,26 +42,27 @@
         }
     }
 
-
-    function reactive(target: any) {
-        const handler: ProxyHandler<any> = {
-            get(target: any, key: string, receiver) {
-                console.log("Get was called", key)
-                const result = Reflect.get(target, key, receiver)
-                track(target, key)
-                return result
-            },
-            set(target: any, key: string, value: any, receiver) {
-                console.log("Set was called", key, value)
-                const oldValue = target[key]
-                const result = Reflect.set(target, key, value, receiver)
-                if (result && oldValue != value) {
-                    trigger(target, key)
+    function reactive<T extends object>(target: T) {
+        return new Proxy(
+            target,
+            {
+                get(target: T, key: string, receiver) {
+                    console.log("Get", key)
+                    const result = Reflect.get(target, key, receiver)
+                    track(target, key)
+                    return result
+                },
+                set(target: T, key: string, value: any, receiver) {
+                    console.log("Set", key, value)
+                    const oldValue = (target as any)[key]
+                    const result = Reflect.set(target, key, value, receiver)
+                    if (result && oldValue != value) {
+                        trigger(target, key)
+                    }
+                    return result
                 }
-                return result
             }
-        }
-        return new Proxy(target, handler)
+        )
     }
 
     function ref(raw: any) {

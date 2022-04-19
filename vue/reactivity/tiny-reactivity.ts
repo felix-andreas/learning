@@ -31,7 +31,6 @@
     }
 
     function trigger(target: object, key: string) {
-        console.log("Trigger", key)
         const depsMap = targetMap.get(target)
         if (!depsMap) {
             return
@@ -40,29 +39,6 @@
         if (dep) {
             dep.forEach(effect => effect())
         }
-    }
-
-    function reactive<T extends object>(target: T) {
-        return new Proxy(
-            target,
-            {
-                get(target: T, key: string, receiver) {
-                    console.log("Get", key)
-                    const result = Reflect.get(target, key, receiver)
-                    track(target, key)
-                    return result
-                },
-                set(target: T, key: string, value: any, receiver) {
-                    console.log("Set", key, value)
-                    const oldValue = (target as any)[key]
-                    const result = Reflect.set(target, key, value, receiver)
-                    if (result && oldValue != value) {
-                        trigger(target, key)
-                    }
-                    return result
-                }
-            }
-        )
     }
 
     function ref(raw: any) {
@@ -79,18 +55,21 @@
         return r
     }
 
-    const product = reactive({ price: 5, quantity: 2 })
-    const salePrice = ref(0)
-    let total = 0
+    function computed(getter: () => any) {
+        const r = ref(undefined)
+        effect(() => r.value = getter())
+        return r
+    }
 
-    effect(() => { salePrice.value = 0.9 * product.price })
-    effect(() => { total = salePrice.value * product.quantity })
+    const foo = ref(1)
+    const bar = computed(() => {console.log("update bar"); return 2 * foo.value})
 
-    console.log({ total, salePrice: salePrice.value })
+    console.log("before", foo.value)
 
-    product.quantity = 3
-    console.log({ total, salePrice: salePrice.value })
+    foo.value = 2 // does trigger update of bar right away, but it shouldn't :/
+    foo.value = 3
+    foo.value = 4
 
-    product.price = 10
-    console.log({ total, salePrice: salePrice.value })
+    console.log("after", foo.value)
+    console.log("after", bar.value)
 })()
