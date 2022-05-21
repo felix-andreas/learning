@@ -1,0 +1,13 @@
+[package]
+name = "try-trunk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wasm-bindgen = "0.2.80"
+gloo = "0.7.0"
+gloo-events = "0.1.2"
+gloo-timers = "0.2.4"
+web-sys = "0.3.57"
