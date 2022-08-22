@@ -1,0 +1,10 @@
+*.dSYM
+libhost.a
+libapp.so
+dynhost
+preprocessedhost
+metadata
+
+# binaries
+hello
+playground
