@@ -11,7 +11,11 @@
       {
         devShell = pkgs.mkShell {
           nativeBuildInputs = [ pkgs.bashInteractive ];
-          buildInputs = with pkgs; [ ghc ghcid haskell-language-server ];
+          buildInputs = with pkgs; [
+            (ghc.withPackages (p: with p; [ split ]))
+            ghcid
+            haskell-language-server
+          ];
         };
       });
 }
