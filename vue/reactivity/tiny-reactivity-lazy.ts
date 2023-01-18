@@ -8,12 +8,6 @@
     const targetMap: TargetMap = new WeakMap()
     let activeEffect: Effect | null = null
 
-    function effect(eff: Effect) {
-        activeEffect = eff
-        activeEffect()
-        activeEffect = null
-    }
-
     function track(target: object, key: string) {
         if (activeEffect) {
             let depsMap = targetMap.get(target)
@@ -55,20 +49,43 @@
         return r
     }
 
-    function computed(getter: () => any) {
-        const r = ref(undefined)
-        effect(() => r.value = getter())
-        return r
+    function computed<T>(getter: () => T) {
+        let value: T
+        const c = {
+            _dirty: true,
+            hasEffect: false,
+            get value() {
+                track(c, 'value')
+                if (!c.hasEffect) {
+                    activeEffect = () => {
+                        if (!c._dirty) {
+                            c._dirty = true
+                            trigger(c, 'value')
+                        }
+                    }
+                    value = getter()
+                    activeEffect = null
+                    c.hasEffect = true
+                    c._dirty = false
+                }
+                else if (c._dirty) {
+                    c._dirty = false
+                    value = getter()
+                }
+                return value
+            },
+        }
+        return c
     }
 
     (() => {
         const a = ref(1)
-        const b = computed(() => { console.log("update b"); return a.value * 2 }) // immedialty computes b
-        const c = computed(() => { console.log("update c"); return b.value * 2 }) // immedialty computes c
+        const b = computed(() => { console.log("update b"); return a.value * 2 }) // only creates computed value
+        const c = computed(() => { console.log("update c"); return b.value * 2 })
         console.log("a", a.value)
-        console.log("b", b.value)
-        console.log("c", c.value)
-        a.value = 2 // also triggers update of b, c
+        console.log("b", b.value) // b getter is executed here
+        console.log("c", c.value) // c getter is executed here
+        a.value = 2 // only updates a and sets dirty flag for b and c
         console.log("a", a.value)
         console.log("b", b.value)
         console.log("c", c.value)
