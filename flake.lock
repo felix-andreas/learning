@@ -275,7 +275,8 @@
         "devshell": "devshell",
         "flake-utils": "flake-utils_2",
         "nickel": "nickel",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_3",
+        "rust-overlay": "rust-overlay_3"
       }
     },
     "rust-overlay": {
@@ -322,6 +323,29 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "1fd6d280c132f4facad8cd023543fb10121e6487",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_3": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1676601131,
+        "narHash": "sha256-iwCg6NimjD4euquhicmSo0wuyP56xUVJUMe0yqUyQms=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "d0dc81ffe8ea09dbf3c07db62a1a057f5319e3ce",
         "type": "github"
       },
       "original": {
