@@ -12,7 +12,7 @@
         devShell = pkgs.mkShell {
           nativeBuildInputs = [ pkgs.bashInteractive ];
           buildInputs = with pkgs; [
-            (ghc.withPackages (p: with p; [ split ]))
+            (ghc.withPackages (p: with p; [ split sqlite-simple ]))
             ghcid
             haskell-language-server
           ];

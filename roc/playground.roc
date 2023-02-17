@@ -1,5 +1,5 @@
 app "playground"
-    packages { pf: "platform/main.roc" }
+    packages { pf: "../../roc/examples/platform-switching/c-platform/main.roc" }
     imports []
     provides [main] to pf
 
