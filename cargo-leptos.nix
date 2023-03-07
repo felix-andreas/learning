@@ -2,17 +2,17 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-leptos";
-  version = "0.1.7";
+  version = "0.1.8";
   buildFeatures = [ "no_downloads" ]; # cargo-leptos will try to download Ruby and other things without this feature
 
   src = fetchFromGitHub {
     owner = "leptos-rs";
     repo = pname;
     rev = version;
-    hash = "sha256-Z7JRTsB3krXAKHbdezaTjR6mUQ07+e4pYtpaMLuoR8I=";
+    hash = "sha256-z4AqxvKu9E8GGMj6jNUAAWeqoE/j+6NoAEZWeNZ+1BA=";
   };
 
-  cargoSha256 = "sha256-MqEErweIHHF8w7WANfh8OpzvS774aIfcfkEOwEofSqw=";
+  cargoSha256 = "sha256-w/9W4DXbh4G5DZ8IGUz4nN3LEjHhL7HgybHqODMFzHw=";
 
   nativeBuildInputs = [ pkg-config openssl ];
 

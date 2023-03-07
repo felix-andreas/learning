@@ -1,0 +1,12 @@
+[build]
+target = "index.html"
+dist = "dist"
+
+# somehow after some reloads the entire page is blank
+# [[hooks]]
+# stage = "build"
+# command = "sh"
+# command_arguments = [
+#     "-c",
+#     "tailwind build src/tailwind.css -o $TRUNK_STAGING_DIR/tailwind.css",
+# ]

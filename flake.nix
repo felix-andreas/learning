@@ -36,6 +36,13 @@
               vscodeExtension
             ];
           };
+          purescript = pkgs.devshell.mkShell {
+            motd = "";
+            packages = with pkgs; [
+              spago
+              purescript-language-server
+            ];
+          };
           rust-wasm =
             let
               rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith
@@ -57,6 +64,7 @@
                 binaryen
                 pkg-config
                 openssl.dev
+                nodePackages.tailwindcss
               ];
               env = [
                 {
