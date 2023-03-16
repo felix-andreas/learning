@@ -1,13 +1,8 @@
 app "playground"
-    packages { pf: "../../roc/examples/platform-switching/c-platform/main.roc" }
-    imports []
+    packages { pf: "../../basic-cli/src/main.roc" }
+    imports [pf.Task.{ Task }, pf.Stdout, pf.Path]
     provides [main] to pf
 
-
-color : [Green, Red]
-color = Red
-
-main = when color is
-    Green -> Str.concat "Hi " "there!\n"
-    Red -> "this is a red tag 🔴\n"
+main : Task {} []
+main = Stdout.line "foo"
 

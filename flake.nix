@@ -2,7 +2,8 @@
   description = "Learning";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "unstable"; # local registry
     flake-utils.url = "github:numtide/flake-utils";
     devshell.url = "github:numtide/devshell";
     nickel.url = "github:tweag/nickel";
@@ -36,13 +37,20 @@
               vscodeExtension
             ];
           };
-          purescript = pkgs.devshell.mkShell {
+          ml = pkgs.devshell.mkShell {
             motd = "";
             packages = with pkgs; [
-              spago
-              purescript-language-server
+              (python310.withPackages (p: with p; [ black isort torch ]))
             ];
           };
+          purescript = pkgs.devshell.mkShell
+            {
+              motd = "";
+              packages = with pkgs; [
+                spago
+                purescript-language-server
+              ];
+            };
           rust-wasm =
             let
               rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith
@@ -50,33 +58,36 @@
                   extensions = [ "rust-src" "rust-analyzer" ];
                   targets = [ "wasm32-unknown-unknown" ];
                 });
-              cargo-leptos = pkgs.callPackage ./cargo-leptos.nix { };
+              cargo-leptos = pkgs.callPackage
+                ./cargo-leptos.nix
+                { };
             in
-            pkgs.devshell.mkShell {
-              motd = "";
-              packages = with pkgs; [
-                rust-toolchain
-                cargo-leptos
-                cargo-generate
-                trunk
-                sass
-                wasm-pack
-                binaryen
-                pkg-config
-                openssl.dev
-                nodePackages.tailwindcss
-              ];
-              env = [
-                {
-                  name = "LD_LIBRARY_PATH";
-                  value = with pkgs; lib.makeLibraryPath [ openssl ];
-                }
-                {
-                  name = "PKG_CONFIG_PATH";
-                  prefix = "$DEVSHELL_DIR/lib/pkgconfig";
-                }
-              ];
-            };
+            pkgs.devshell.mkShell
+              {
+                motd = "";
+                packages = with pkgs; [
+                  rust-toolchain
+                  cargo-leptos
+                  cargo-generate
+                  trunk
+                  sass
+                  wasm-pack
+                  binaryen
+                  pkg-config
+                  openssl.dev
+                  nodePackages.tailwindcss
+                ];
+                env = [
+                  {
+                    name = "LD_LIBRARY_PATH";
+                    value = with pkgs; lib.makeLibraryPath [ openssl ];
+                  }
+                  {
+                    name = "PKG_CONFIG_PATH";
+                    prefix = "$DEVSHELL_DIR/lib/pkgconfig";
+                  }
+                ];
+              };
         };
       });
 }
