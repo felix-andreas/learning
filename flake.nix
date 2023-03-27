@@ -24,7 +24,7 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ devshell.overlay (import rust-overlay) ];
+          overlays = [ devshell.overlays.default (import rust-overlay) ];
         };
       in
       {
@@ -40,7 +40,7 @@
           ml = pkgs.devshell.mkShell {
             motd = "";
             packages = with pkgs; [
-              (python310.withPackages (p: with p; [ black isort torch ]))
+              (python310.withPackages (p: with p; [ black isort ipython torch ]))
             ];
           };
           purescript = pkgs.devshell.mkShell

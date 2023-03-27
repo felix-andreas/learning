@@ -1,3 +1,4 @@
+// how to execute an async function without a runtime?
 // based on https://www.youtube.com/watch?v=FNcXf-4CLH0
 
 use futures::executor::block_on;
