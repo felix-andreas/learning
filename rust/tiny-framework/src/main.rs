@@ -1,32 +1,26 @@
-use {std::ops::Deref, web_sys::Element};
+use {
+    leptos_reactive::{create_signal, Scope, SignalUpdate},
+    tiny_framework::{self as tf, El},
+};
 
 fn main() {
-    let node = El::new("button");
-    mount(node);
+    tf::mount(app);
 }
 
-fn mount(root: El) {
-    let window = web_sys::window().unwrap();
-    let document = window.document().unwrap();
-    let body = document.body().unwrap();
-    body.append_child(&root).unwrap();
-}
-
-struct El(Element);
-
-impl El {
-    fn new(tag_name: &str) -> Self {
-        let document = web_sys::window().unwrap().document().unwrap();
-        let button = document.create_element(tag_name).unwrap();
-        button.set_text_content(Some("hello from tiny framework"));
-        El(button)
-    }
-}
-
-impl Deref for El {
-    type Target = Element;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
+fn app(cx: Scope) -> El {
+    let (count, set_count) = create_signal(cx, 0);
+    El::new("div")
+        .child(
+            El::new("button")
+                .on("click", move |_| set_count.update(|n| *n -= 1))
+                .attr("id", "decrement")
+                .text("-1"),
+        )
+        .text_dyn(cx, move || count().to_string())
+        .child(
+            El::new("button")
+                .on("click", move |_| set_count.update(|n| *n += 1))
+                .attr("id", "increment")
+                .text("+1"),
+        )
 }
