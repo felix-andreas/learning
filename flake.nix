@@ -51,6 +51,19 @@
                 purescript-language-server
               ];
             };
+          rust =
+            let
+              rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith
+                (toolchain: toolchain.default.override {
+                  extensions = [ "rust-src" "rust-analyzer" ];
+                });
+            in
+            pkgs.devshell.mkShell {
+              motd = "";
+              packages = [
+                rust-toolchain
+              ];
+            };
           rust-wasm =
             let
               rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith
@@ -62,32 +75,31 @@
                 ./cargo-leptos.nix
                 { };
             in
-            pkgs.devshell.mkShell
-              {
-                motd = "";
-                packages = with pkgs; [
-                  rust-toolchain
-                  cargo-leptos
-                  cargo-generate
-                  trunk
-                  sass
-                  wasm-pack
-                  binaryen
-                  pkg-config
-                  openssl.dev
-                  nodePackages.tailwindcss
-                ];
-                env = [
-                  {
-                    name = "LD_LIBRARY_PATH";
-                    value = with pkgs; lib.makeLibraryPath [ openssl ];
-                  }
-                  {
-                    name = "PKG_CONFIG_PATH";
-                    prefix = "$DEVSHELL_DIR/lib/pkgconfig";
-                  }
-                ];
-              };
+            pkgs.devshell.mkShell {
+              motd = "";
+              packages = with pkgs; [
+                rust-toolchain
+                cargo-leptos
+                cargo-generate
+                trunk
+                sass
+                wasm-pack
+                binaryen
+                pkg-config
+                openssl.dev
+                nodePackages.tailwindcss
+              ];
+              env = [
+                {
+                  name = "LD_LIBRARY_PATH";
+                  value = with pkgs; lib.makeLibraryPath [ openssl ];
+                }
+                {
+                  name = "PKG_CONFIG_PATH";
+                  prefix = "$DEVSHELL_DIR/lib/pkgconfig";
+                }
+              ];
+            };
         };
       });
 }
