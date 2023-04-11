@@ -1,2 +1,2 @@
 [workspace]
-members = ["tiny-framework"]
+members = ["explore", "tiny-framework"]
