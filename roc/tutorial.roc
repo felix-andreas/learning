@@ -4,27 +4,58 @@ app "playground"
     provides [main] to pf
 
 main : Task {} []
-main = 
+main =
     [
-        stringsAndNumbers
+        stringsAndNumbers,
+        ifelse,
+        records,
     ]
-    |> List.join
-    |> Str.joinWith "\n"
+    |> List.map (\x -> Str.joinWith x "\n")
+    |> Str.joinWith "\n\n"
     |> Stdout.line
 
-
-
 stringsAndNumbers : List Str
-stringsAndNumbers = 
+stringsAndNumbers =
     name = "Max"
     stringInterpolation = "Hello \(name)!"
     arithmetic = Num.toStr (1 + 3)
     callingFunctions = Str.concat "Hi, " "there"
     [
-        "stringInterpolation: \(stringInterpolation)",
-        "arithmetic: \(arithmetic)",
-        "callingFunctions: \(callingFunctions)",
+        "Strings And Numbers",
+        "  stringInterpolation: \(stringInterpolation)",
+        "  arithmetic: \(arithmetic)",
+        "  callingFunctions: \(callingFunctions)",
     ]
 
+ifelse : List Str
+ifelse =
+    count = 4
+    result = if count == 4 then "foo" else "bar"
+    [
+        "If .. then .. else ..",
+        "  ifelse: \(result)",
+    ]
 
-
+records : List Str
+records =
+    notUsed = 10
+    data = { birds: 5, iguanas: 7, notUsed }
+    addAndStringify = \counts -> counts.birds + counts.iguanas |> Num.toStr
+    total = addAndStringify data
+    addAndStringifyDestructuring = \{ birds, iguanas } -> birds + iguanas |> Num.toStr
+    totalDestructering = addAndStringifyDestructuring data
+    numBirds = .birds data |> Num.toStr
+    numBirdsDestructering =
+        { birds } = data
+        Num.toStr birds
+    original = { birds: 5, zebras: 3, iguanas: 7, goats: 1 }
+    fromOriginal = { original & birds: 4 }
+    # encoded = Encode.toBytes fromOriginal Json.toUtf8 |> Str.fromUtf8 |> Result.withDefault "rip"
+    [
+        "Records",
+        "  total: \(total)",
+        "  totalDestructering: \(totalDestructering)",
+        "  numBirds: \(numBirds)",
+        "  numBirdsDestructering: \(numBirdsDestructering)",
+        # "  fromOriginal: \(encoded)",
+    ]
