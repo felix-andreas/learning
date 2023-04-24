@@ -22,6 +22,7 @@
   outputs = { self, nixpkgs, flake-utils, devshell, nickel, rust-overlay }:
     flake-utils.lib.eachDefaultSystem (system:
       let
+        lib = pkgs.lib;
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ devshell.overlays.default (import rust-overlay) ];
@@ -62,6 +63,31 @@
               motd = "";
               packages = [
                 rust-toolchain
+              ];
+            };
+          rust-ml =
+            let
+              rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith
+                (toolchain: toolchain.default.override {
+                  extensions = [ "rust-src" "rust-analyzer" ];
+                });
+            in
+            pkgs.devshell.mkShell {
+              motd = "";
+              packages = [
+                rust-toolchain
+                pkgs.libtorch-bin.dev
+                pkgs.pkg-config
+              ];
+              env = [
+                {
+                  name = "LIBTORCH_LIB";
+                  value = with pkgs; libtorch-bin;
+                }
+                {
+                  name = "LIBTORCH_INCLUDE";
+                  value = with pkgs; libtorch-bin.dev;
+                }
               ];
             };
           rust-wasm =
