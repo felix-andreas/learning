@@ -9,6 +9,7 @@ main =
         stringsAndNumbers,
         ifelse,
         records,
+        tags,
     ]
     |> List.map (\x -> Str.joinWith x "\n")
     |> Str.joinWith "\n\n"
@@ -48,8 +49,8 @@ records =
     numBirdsDestructering =
         { birds } = data
         Num.toStr birds
-    original = { birds: 5, zebras: 3, iguanas: 7, goats: 1 }
-    fromOriginal = { original & birds: 4 }
+    # original = { birds: 5, zebras: 3, iguanas: 7, goats: 1 }
+    # fromOriginal = { original & birds: 4 }
     # encoded = Encode.toBytes fromOriginal Json.toUtf8 |> Str.fromUtf8 |> Result.withDefault "rip"
     [
         "Records",
@@ -58,4 +59,22 @@ records =
         "  numBirds: \(numBirds)",
         "  numBirdsDestructering: \(numBirdsDestructering)",
         # "  fromOriginal: \(encoded)",
+    ]
+
+tags : List Str
+tags =
+    color = \x ->
+        if x > 5 then
+            Red
+        else if x > 10 then
+            Blue
+        else
+            Custom "#18fa19"
+    string = when color 3 is
+        Red -> "red"
+        Blue -> "blue"
+        Custom value -> value
+    [
+        "Tags",
+        "  color: \(string)"
     ]
