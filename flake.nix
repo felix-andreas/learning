@@ -103,7 +103,7 @@
               });
             cargo-leptos = pkgs.callPackage
               ./cargo-leptos.nix
-              { };
+              { rustPlatform = rust-toolchain; };
           in
           pkgs.devshell.mkShell {
             motd = "";
