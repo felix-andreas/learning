@@ -7,7 +7,3 @@ async fn main() {
         println!("ctrl-c received!");
     }
 }
-
-fn foo() -> Result<u32, ()> {
-    Err(())
-}

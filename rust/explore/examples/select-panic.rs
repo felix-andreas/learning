@@ -13,7 +13,6 @@ async fn task1() -> i32 {
     tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
     let result = tokio::spawn(async {
         panic!();
-        5
     })
     .await;
     tokio::time::sleep(tokio::time::Duration::from_secs(4)).await;
