@@ -56,6 +56,21 @@
               purescript-language-server
             ];
           };
+        r = pkgs.devshell.mkShell {
+          motd = "";
+          packages = with pkgs; [
+            (rWrapper.override {
+              packages = with pkgs.rPackages; [
+                languageserver
+                swirl
+                tidyverse
+                svglite
+                # dplyr
+                # ggplot2
+              ];
+            })
+          ];
+        };
         rust =
           let
             rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith
@@ -67,6 +82,7 @@
             motd = "";
             packages = [
               rust-toolchain
+              pkgs.cargo-expand
             ];
           };
         rust-ml =
@@ -101,9 +117,6 @@
                 extensions = [ "rust-src" "rust-analyzer" ];
                 targets = [ "wasm32-unknown-unknown" ];
               });
-            cargo-leptos = pkgs.callPackage
-              ./cargo-leptos.nix
-              { rustPlatform = rust-toolchain; };
           in
           pkgs.devshell.mkShell {
             motd = "";
