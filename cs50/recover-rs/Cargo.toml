@@ -1,11 +1,8 @@
 [package]
-name = "cs50-rust"
+name = "recover-rs"
 version = "0.1.0"
 authors = ["Felix Andreas"]
 edition = "2018"
-
-[[bin]]
-name = "recover"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
