@@ -1,46 +1,48 @@
 use leptos_reactive::*;
 
 fn main() {
-    _ = create_scope(create_runtime(), |cx| {
-        run(cx);
-    })
+    let _ = create_runtime();
+    run();
 }
 
-fn run(cx: Scope) {
-    let (value, set_value) = create_signal(cx, 1);
+fn run() {
+    let (value, set_value) = create_signal(1);
     let derived = || {
         println!("compute derived");
-        value() * 2
+        value.get() * 2
     };
-    let memo = create_memo(cx, move |_| {
+    let memo = create_memo(move |_| {
         println!("compute memo");
-        value() * 3
+        value.get() * 3
     });
-    let resource = create_resource(cx, value, |number| async move {
-        println!("compute resource");
-        4 * number
-    });
-    create_effect(cx, move |_| println!("value changed: {}", value()));
-    println!(
-        "value: {}, derived: {}, memo {}, resource {:?}",
-        value(),
-        derived(),
-        memo(),
-        resource.read(cx),
+    let resource = create_resource(
+        move || (value),
+        |number| async move {
+            println!("compute resource");
+            4 * number.get()
+        },
     );
-    set_value(2);
+    create_effect(move |_| println!("value changed: {}", value.get()));
     println!(
         "value: {}, derived: {}, memo {}, resource {:?}",
-        value(),
+        value.get(),
         derived(),
-        memo(),
-        resource.read(cx),
+        memo.get(),
+        resource.get(),
+    );
+    set_value.set(2);
+    println!(
+        "value: {}, derived: {}, memo {}, resource {:?}",
+        value.get(),
+        derived(),
+        memo.get(),
+        resource.get(),
     );
     println!(
         "value: {}, derived: {}, memo {}, resource {:?}",
-        value(),
+        value.get(),
         derived(),
-        memo(),
-        resource.read(cx),
+        memo.get(),
+        resource.get(),
     );
 }

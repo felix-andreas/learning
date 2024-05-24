@@ -1,15 +1,12 @@
 use {
-    leptos_reactive::Scope,
     std::ops::Deref,
     wasm_bindgen::{JsCast, JsValue},
     web_sys::{console, Document, Element, Event},
 };
 
-pub fn mount(f: impl FnOnce(Scope) -> El + 'static) {
-    let runtime = leptos_reactive::create_runtime();
-    _ = leptos_reactive::create_scope(runtime, |cx| {
-        document().body().unwrap().append_child(&f(cx)).unwrap();
-    })
+pub fn mount(f: impl FnOnce() -> El + 'static) {
+    let _ = leptos_reactive::create_runtime();
+    document().body().unwrap().append_child(&f()).unwrap();
 }
 
 /*
@@ -53,10 +50,10 @@ impl El {
         self
     }
 
-    pub fn text_dyn(self, cx: Scope, f: impl Fn() -> String + 'static) -> Self {
+    pub fn text_dyn(self, f: impl Fn() -> String + 'static) -> Self {
         let text_node = document().create_text_node("");
         self.0.append_child(&text_node).unwrap();
-        leptos_reactive::create_effect(cx, move |_| text_node.set_data(&f()));
+        leptos_reactive::create_effect(move |_| text_node.set_data(&f()));
         self
     }
 

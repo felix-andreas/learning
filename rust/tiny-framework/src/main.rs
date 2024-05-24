@@ -1,5 +1,5 @@
 use {
-    leptos_reactive::{create_signal, Scope, SignalUpdate},
+    leptos_reactive::*,
     tiny_framework::{self as tf, El},
 };
 
@@ -7,8 +7,8 @@ fn main() {
     tf::mount(app);
 }
 
-fn app(cx: Scope) -> El {
-    let (count, set_count) = create_signal(cx, 0);
+fn app() -> El {
+    let (count, set_count) = create_signal(0);
     El::new("div")
         .child(
             El::new("button")
@@ -16,7 +16,7 @@ fn app(cx: Scope) -> El {
                 .attr("id", "decrement")
                 .text("-1"),
         )
-        .text_dyn(cx, move || count().to_string())
+        .text_dyn(move || count.get().to_string())
         .child(
             El::new("button")
                 .on("click", move |_| set_count.update(|n| *n += 1))

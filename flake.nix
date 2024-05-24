@@ -48,14 +48,19 @@
             (python310.withPackages (p: with p; [ black isort ipython torch ]))
           ];
         };
-        purescript = pkgs.devshell.mkShell
-          {
-            motd = "";
-            packages = with pkgs; [
-              spago
-              purescript-language-server
-            ];
-          };
+        ocaml = pkgs.devshell.mkShell {
+          motd = "";
+          packages = with pkgs; [
+            ocaml
+          ];
+        };
+        purescript = pkgs.devshell.mkShell {
+          motd = "";
+          packages = with pkgs; [
+            spago
+            purescript-language-server
+          ];
+        };
         r = pkgs.devshell.mkShell {
           motd = "";
           packages = with pkgs; [
