@@ -1,26 +1,33 @@
-use {
-    leptos_reactive::*,
-    tiny_framework::{self as tf, El},
-};
+use {leptos_reactive::*, tiny_framework::El};
 
 fn main() {
-    tf::mount(app);
+    console_error_panic_hook::set_once();
+    tiny_framework::mount(app);
 }
-
 fn app() -> El {
-    let (count, set_count) = create_signal(0);
+    let count = RwSignal::new(0);
     El::new("div")
+        .attr("style", "display: flex; gap: 1rem;")
         .child(
             El::new("button")
-                .on("click", move |_| set_count.update(|n| *n -= 1))
-                .attr("id", "decrement")
-                .text("-1"),
+                .attr("id", "log")
+                .text("log value")
+                .on("click", move |_| {
+                    tiny_framework::log_str(&count().to_string())
+                }),
         )
-        .text_dyn(move || count.get().to_string())
         .child(
             El::new("button")
-                .on("click", move |_| set_count.update(|n| *n += 1))
-                .attr("id", "increment")
-                .text("+1"),
+                .attr("id", "dec")
+                .text("-")
+                .on("click", move |_| count.update(|x| *x -= 1)),
+        )
+        .text(" Value: ")
+        .dyn_text(move || count().to_string())
+        .child(
+            El::new("button")
+                .attr("id", "inc")
+                .text("+")
+                .on("click", move |_| count.update(|x| *x += 1)),
         )
 }
