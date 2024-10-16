@@ -52,6 +52,11 @@
           motd = "";
           packages = with pkgs; [
             ocaml
+            ocamlPackages.ocaml-lsp
+            ocamlPackages.ocamlformat
+            opam
+            dune_3
+            rlwrap
           ];
         };
         purescript = pkgs.devshell.mkShell {
