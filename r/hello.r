@@ -4,7 +4,7 @@ suppressPackageStartupMessages({
 
 obs <- 104
 
-x <- starwars[c("name", "height")]
+x <- starwars[c(   "name" , "height")]
 
 ggsave(
     "foo.png",

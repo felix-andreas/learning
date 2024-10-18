@@ -66,21 +66,26 @@
             purescript-language-server
           ];
         };
-        r = pkgs.devshell.mkShell {
-          motd = "";
-          packages = with pkgs; [
-            (rWrapper.override {
-              packages = with pkgs.rPackages; [
-                languageserver
-                swirl
-                tidyverse
-                svglite
-                # dplyr
-                # ggplot2
-              ];
-            })
-          ];
-        };
+        r =
+          let
+            rpkgs = with pkgs.rPackages; [
+              languageserver
+              lintr
+              lobstr
+              svglite
+              swirl
+              tidyverse
+              # dplyr
+              # ggplot2
+            ];
+          in
+          pkgs.devshell.mkShell {
+            motd = "";
+            packages = with pkgs; [
+              # (rWrapper.override { packages = rpkgs; })
+              (radianWrapper.override { packages = rpkgs; wrapR = true; })
+            ];
+          };
         rust =
           let
             rust-toolchain = pkgs.rust-bin.selectLatestNightlyWith

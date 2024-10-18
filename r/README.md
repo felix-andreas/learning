@@ -4,12 +4,14 @@
 
 ### Explanation
 
+* R language documentation: https://rdrr.io/r/
 * Introduction to R: https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Objects
 * https://dcl-prog.stanford.edu/data-structure-basics.html
 * R4DS 1st Edition: https://r4ds.had.co.nz/vectors.html (not contained in 2nd edition)
 * R4DS 2nd Edition: https://r4ds.hadley.nz/
 * Advanced R: https://adv-r.hadley.nz/
 * Advanced R Solutions: https://advanced-r-solutions.rbind.io/
+* R Packages https://r-pkgs.org/
 
 ### Reference
 
@@ -37,6 +39,24 @@
 
 ### Attributes
 
-All objects except NULL can have one or more attributes attached to them. 
+All objects except NULL can have one or more attributes attached to them.
 
 https://cran.r-project.org/doc/manuals/R-lang.html#Attributes
+
+### Frameworks
+
+* https://shiny.posit.co/
+
+### Tips
+
+Execute `lintr`:
+
+```
+R -s -e 'lintr::lint_dir(path = ".")'
+```
+
+Execute the R language server:
+
+```
+R --slave -s -e 'languageserver::run()'
+```
